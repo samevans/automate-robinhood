@@ -4,7 +4,7 @@ import config
 
 my_trader = Robinhood()
 
-my_trader.login(username=config.APP_CONFIG['username'], password=config.APP_CONFIG['password'])
+my_trader.login(username=config.ROBINHOOD_CONFIG['username'], password=config.ROBINHOOD_CONFIG['password'])
 
 #Get stock information
     #Note: Sometimes more than one instrument may be returned for a given stock symbol
