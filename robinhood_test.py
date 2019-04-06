@@ -4,9 +4,19 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import config
 
+# Auth to Robinhood
 my_trader = Robinhood()
 
 my_trader.login(username=config.ROBINHOOD_CONFIG['username'], password=config.ROBINHOOD_CONFIG['password'])
+
+
+# Auth to Google Sheets
+scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/drive']
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name('googlesheets.json', scope)
+
+gc = gspread.authorize(credentials)
 
 #Get stock information
     #Note: Sometimes more than one instrument may be returned for a given stock symbol
@@ -40,3 +50,8 @@ for row in my_trader.positions()['results']:
     splits = my_trader.get_url(row['url'])
     pprint(splits)
     break
+    
+wks = gc.open("Portfolio").sheet1
+
+print(wks)
+    
