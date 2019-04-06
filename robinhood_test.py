@@ -5,25 +5,20 @@ from oauth2client.service_account import ServiceAccountCredentials
 import config
 
 # Auth to Robinhood
-my_trader = Robinhood()
-
-my_trader.login(username=config.ROBINHOOD_CONFIG['username'], password=config.ROBINHOOD_CONFIG['password'])
-
+trader = Robinhood()
+trader.login(username=config.ROBINHOOD_CONFIG['username'], password=config.ROBINHOOD_CONFIG['password'])
 
 # Auth to Google Sheets
-scope = ['https://spreadsheets.google.com/feeds',
-         'https://www.googleapis.com/auth/drive']
-
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 credentials = ServiceAccountCredentials.from_json_keyfile_name('googlesheets.json', scope)
-
 gc = gspread.authorize(credentials)
 
 #Get stock information
     #Note: Sometimes more than one instrument may be returned for a given stock symbol
-stock_instrument = my_trader.instruments("GEVO")[0]
+#stock_instrument = my_trader.instruments("GEVO")[0]
 
 #Get a stock's quote
-my_trader.print_quote("AAPL")
+#my_trader.print_quote("AAPL")
 
 #Prompt for a symbol
 #my_trader.print_quote()
@@ -41,17 +36,14 @@ my_trader.print_quote("AAPL")
 #for result in owned_sec[1]['results']:
 #    pprint(result)
 
-for row in my_trader.positions()['results']:
+for row in trader.positions()['results']:
     if float(row['quantity']) == 0:
         continue
     pprint(row)
-    trade = my_trader.get_url(row['instrument'])
+    trade = trader.get_url(row['instrument'])
     pprint(trade)
-    splits = my_trader.get_url(row['url'])
-    pprint(splits)
     break
     
 wks = gc.open("Portfolio").sheet1
 
 print(wks)
-    
