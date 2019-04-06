@@ -1,5 +1,7 @@
 from Robinhood import Robinhood
 from pprint import pprint
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 import config
 
 my_trader = Robinhood()
@@ -35,3 +37,6 @@ for row in my_trader.positions()['results']:
     pprint(row)
     trade = my_trader.get_url(row['instrument'])
     pprint(trade)
+    splits = my_trader.get_url(row['url'])
+    pprint(splits)
+    break
